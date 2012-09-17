@@ -14,7 +14,7 @@ class RandomPlayer(val name: String) extends Player {
    */
   def makeTurn(board: List[List[List[Int]]]): (Int, Int) = {
     while (true) {
-      val (i, j) = (Random.nextInt(3), Random.nextInt(3))
+      val (i, j) = (Random.nextInt(4), Random.nextInt(4))
 
       if (board(i)(j).contains(0)) return (i, j)
     }
