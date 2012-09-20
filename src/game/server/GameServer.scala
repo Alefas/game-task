@@ -15,7 +15,8 @@ object GameServer {
   private val players: List[Player] =
     List(
       new RandomPlayer("Random"),
-      new StackPlayer("Stack")
+      new StackPlayer("Stack"),
+      new SergeyLazarevPlayer("Sergey Lazarev")
     )
 
   def main(args: Array[String]) {
