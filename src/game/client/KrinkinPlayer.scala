@@ -5,26 +5,31 @@ class KrinkinPlayer(val name: String) extends Player {
    * @return expected estimation for (i,j,k) turn (the more the better)
    */
   private def estimate(board: List[List[List[Int]]], i: Int, j: Int, k: Int): Int = {
-    //estimate one line
     def estimate_line(fun: Int => Int): Int = {
-      val line   = (0 to 3).map(fun)
-      val mine   = line.count(_ == 1)
-      val others = line.count(_ == -1)
+      def increment(acc: (Int, Int), index: Int): (Int, Int) = {
+        fun(index) match {
+          case 1  => (acc._1 + 1, acc._2)
+          case -1 => (acc._1, acc._2 + 1)
+          case _  => acc
+        }
+      }
+      // counter._1 - mine, counter._2 - others
+      val counter: (Int, Int) = (0 to 3).foldLeft((0, 0))(increment)
 
       //if mine and others in one line, we shoud no to attempt to capture
       //or to defend this line
-      if ((mine != 0) && (others != 0)) return 0
+      if ((counter._1 != 0) && (counter._2 != 0)) return 0
 
       //it is win turn
-      if (mine == 3) return 10000;
+      if (counter._1 == 3) return 100000;
 
       //last attempt
-      if (others == 3) return 100;
-
+      if (counter._2 == 3) return 1000;
+    
       //defense is slightly preferable, otherwise
-      mine*3 + others*4 + 1
+      counter._1*3 + counter._2*4 + 1
     }
-
+    
     var estimation: Int = 0
 
     //simple rows and cols through (i,j,k)
@@ -47,7 +52,7 @@ class KrinkinPlayer(val name: String) extends Player {
     if (i + k == 3) estimation += estimate_line(x => board(x)(j)(3 - x))
 
     //k-const slice diagonals
-    if (i == j) estimation += estimate_line(x => board(i)(j)(k))
+    if (i == j) estimation += estimate_line(x => board(x)(x)(k))
     if (i + j == 3) estimation += estimate_line(x => board(x)(3 - x)(k))
 
     estimation
@@ -63,8 +68,7 @@ class KrinkinPlayer(val name: String) extends Player {
 
     for (i <- 0 to 3; j <- 0 to 3) {
       val k = board(i)(j).indexOf(0)
-      if (k != -1)
-      {
+      if (k != -1) {
         val expected: Int = estimate(board, i, j, k)
         if (expected > best_estimation) {
           best_turn = (i, j)
