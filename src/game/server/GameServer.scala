@@ -16,7 +16,8 @@ object GameServer {
     List(
       new RandomPlayer("Random"),
       new StackPlayer("Stack"),
-      new SergeyLazarevPlayer("Sergey Lazarev")
+      new SergeyLazarevPlayer("Sergey Lazarev"),
+      new BashorovSmartPlayer("Zalim Basharov")
     )
 
   def main(args: Array[String]) {
