@@ -19,7 +19,8 @@ object GameServer {
       new SergeyLazarevPlayer("Sergey Lazarev"),
       new BashorovSmartPlayer("Zalim Basharov"),
       new AlinaPevznerPlayer("Alina Pevzner"),
-      new IvanovakAlpha2("Anton Ivanov")
+      new IvanovakAlpha2("Anton Ivanov"),
+      new CriticalPositivePlayer("Alexey Velikiy")
     )
 
   def main(args: Array[String]) {
