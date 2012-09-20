@@ -63,8 +63,7 @@ class KrinkinPlayer(val name: String) extends Player {
 
     for (i <- 0 to 3; j <- 0 to 3) {
       val k = board(i)(j).indexOf(0)
-      if (k != -1)
-      {
+      if (k != -1) {
         val expected: Int = estimate(board, i, j, k)
         if (expected > best_estimation) {
           best_turn = (i, j)
