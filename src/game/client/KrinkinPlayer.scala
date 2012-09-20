@@ -1,5 +1,7 @@
 package game.client
 
+import util.Random
+
 class KrinkinPlayer(val name: String) extends Player {
   /**
    * @return expected estimation for (i,j,k) turn (the more the better)
@@ -16,10 +18,10 @@ class KrinkinPlayer(val name: String) extends Player {
       if ((mine != 0) && (others != 0)) return 0
 
       //it is win turn
-      if (mine == 3) return 10000;
+      if (mine == 3) return 100000;
 
       //last attempt
-      if (others == 3) return 100;
+      if (others == 3) return 1000;
 
       //defense is slightly preferable, otherwise
       mine*3 + others*4 + 1
@@ -47,7 +49,7 @@ class KrinkinPlayer(val name: String) extends Player {
     if (i + k == 3) estimation += estimate_line(x => board(x)(j)(3 - x))
 
     //k-const slice diagonals
-    if (i == j) estimation += estimate_line(x => board(i)(j)(k))
+    if (i == j) estimation += estimate_line(x => board(x)(x)(k))
     if (i + j == 3) estimation += estimate_line(x => board(x)(3 - x)(k))
 
     estimation
@@ -58,20 +60,21 @@ class KrinkinPlayer(val name: String) extends Player {
    * @return tuple with your turn coordinates (every coordinate should point to range 0 to 3)
    */
   def makeTurn(board: List[List[List[Int]]]): (Int, Int) = {
-    var best_turn: (Int, Int) = (0, 0)
+    var best_turns: List[(Int, Int)] = (0, 0) :: List()
     var best_estimation: Int = -1
 
     for (i <- 0 to 3; j <- 0 to 3) {
       val k = board(i)(j).indexOf(0)
-      if (k != -1)
-      {
+      if (k != -1) {
         val expected: Int = estimate(board, i, j, k)
         if (expected > best_estimation) {
-          best_turn = (i, j)
+          best_turns = (i, j) :: List()
           best_estimation = expected
+        } else if (expected == best_estimation) {
+          best_turns = (i, j) :: best_turns;
         }
       }
     }
-    best_turn
+    best_turns(Random.nextInt(best_turns.length))
   }
 }
