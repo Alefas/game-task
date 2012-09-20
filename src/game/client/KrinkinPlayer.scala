@@ -47,7 +47,7 @@ class KrinkinPlayer(val name: String) extends Player {
     if (i + k == 3) estimation += estimate_line(x => board(x)(j)(3 - x))
 
     //k-const slice diagonals
-    if (i == j) estimation += estimate_line(x => board(i)(j)(k))
+    if (i == j) estimation += estimate_line(x => board(x)(x)(k))
     if (i + j == 3) estimation += estimate_line(x => board(x)(3 - x)(k))
 
     estimation
