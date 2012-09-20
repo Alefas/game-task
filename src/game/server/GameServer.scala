@@ -102,6 +102,7 @@ object GameServer {
     if (check(p => board(p)(p)(p))) return 1
     if (check(p => board(p)(p)(3 - p))) return 1
     if (check(p => board(p)(3 - p)(3 - p))) return 1
+    if (check(p => board(p)(3 - p)(p))) return 1
     if (board.forall(_.forall(_.forall(_ != 0)))) return 0
     return -1
   }
